@@ -11,6 +11,11 @@ class MenusTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Menu::class, 10)->create();
+        factory(\App\Models\MenuCategory::class, 5)->create()->each(function($category) {
+            factory(\App\Models\Menu::class, 3)->create([
+                'category_id' => $category->id
+            ]);
+        });
+        
     }
 }
