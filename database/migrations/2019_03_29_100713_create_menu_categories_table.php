@@ -16,7 +16,7 @@ class CreateMenuCategoriesTable extends Migration
         Schema::create('menu_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('resto_id');
-            $table->string('title');
+            $table->string('name');
             $table->timestamps();
         });
     }
