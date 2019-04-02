@@ -1,4 +1,5 @@
 require('./bootstrap');
+require('vue-multiselect/dist/vue-multiselect.min.css');
 
 window.Vue = require('vue');
 
