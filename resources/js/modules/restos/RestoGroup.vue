@@ -10,15 +10,30 @@
       <div class="col-md-4" v-if="showAddForm">
         <card-component>
           <template slot="title">Add new Restaurant</template>
-          <template slot="body">+</template>
+          <template slot="body">
+            <span @click="handleAddNewResto">+</span>
+          </template>
         </card-component>
+        <modal name="add-new-resto" height="60%">
+          <div class="container-padding">
+            <resto-add-form
+                @addRestoEvent="handleSaveResto" 
+                @modalCancel="handleCancelResto"
+              >
+            </resto-add-form>
+          </div>
+        </modal>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import RestoAddForm from './RestoAddForm.vue';
 export default {
+  components: {
+    RestoAddForm
+  },
   props: ['restos'],
   created() {
     console.log('this.restos.length', this.restos.length);
@@ -33,5 +48,16 @@ export default {
 
     }
   },
+  methods: {
+    handleAddNewResto() {
+      this.$modal.show('add-new-resto');
+    },
+    handleCancelResto() {
+      this.$modal.hide('add-new-resto');
+    },
+    handleSaveResto(restoData) {
+      console.log('restoData', restoData);
+    }
+  }
 }
 </script>

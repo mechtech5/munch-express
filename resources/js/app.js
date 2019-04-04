@@ -1,7 +1,11 @@
 require('./bootstrap');
 require('vue-multiselect/dist/vue-multiselect.min.css');
+import VModal from 'vue-js-modal'
+
 
 window.Vue = require('vue');
+
+Vue.use(VModal)
 
 
 Vue.component('card-component', require('./components/Card.vue').default);
