@@ -29,7 +29,7 @@
 <script>
 import Multiselect from 'vue-multiselect';
 export default {
-  props: ['categories'],
+  props: ['categories', 'restoId'],
   components: {
     Multiselect
   },
@@ -45,6 +45,11 @@ export default {
   methods: {
     handleSubmit() {
       console.log('form data', this.food);
+      let postData = this.food;
+      postData.restoId = this.restoId;
+      window.axios.post('api/item/save', postData).then(response => {
+        console.log('response', response.data);
+      }).catch(error => console.log('error', error.response))
     }
   }
 }

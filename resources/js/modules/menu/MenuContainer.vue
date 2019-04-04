@@ -21,7 +21,7 @@
         <card-component>
           <template slot="title">Add menu items</template>
           <template slot="body">
-            <menu-add-form :categories="categories"></menu-add-form>
+            <menu-add-form :categories="categories" :resto-id="restoId"></menu-add-form>
           </template>
         </card-component>
       </div>
@@ -36,7 +36,7 @@ import Multiselect from 'vue-multiselect';
 import MenuGroup from './MenuGroup.vue';
 import MenuAddForm from './MenuAddForm.vue';
 export default {
-  props: ['items'],
+  props: ['items', 'restoId'],
   components: {
     Multiselect, MenuGroup, MenuAddForm
   },
