@@ -13,16 +13,19 @@ class MenuController extends Controller
         $postData = $this->validate($request, [
             'restoId' => 'required|numeric',
             'price' => 'required|numeric',
+            'description' => 'required',
             'item' => 'required',
             'category' => ['required', new RestoCategoryValidate(request('restoId'))]
         ]);
 
-        $category = MenuCategory::where('resto_id', $postData['restoId'])->where('name', $postData['category'])->first();
+        $category = MenuCategory::where('resto_id', $postData['restoId'])
+                                ->where('name', $postData['category'])
+                                ->first();
 
-        Menu::create([
+        $menu = Menu::create([
             'name' => $postData['item'],
             'price' => $postData['price'],
-            'description' => $request->input('description'),
+            'description' => $postData['description'],
             'resto_id' => $postData['restoId'],
             'category_id' => $category->id
         ]);

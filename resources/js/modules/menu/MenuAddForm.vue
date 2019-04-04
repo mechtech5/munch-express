@@ -8,7 +8,7 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Select category</label>
+        <label for="name">Select Menu Category</label>
         <multiselect
           v-model="food.category"
           :options="categories"
@@ -46,12 +46,12 @@ export default {
   },
   data() {
     return {
-      food: this.getBasicMenuItem(),
+      food: this.emptyMenuForm(),
       validation: new Validation()
     }
   },
   methods: {
-    getBasicMenuItem() {
+    emptyMenuForm() {
       return {
         item: '',
         category: '',
@@ -60,11 +60,13 @@ export default {
       }
     },
     handleSubmit() {
-      console.log('form data', this.food);
+      // console.log('form data', this.food);
       let postData = this.food;
       postData.restoId = this.restoId;
       window.axios.post('api/item/save', postData).then(response => {
         console.log('response', response.data);
+        this.$emit('newMenuItemAdded', response.data, postData.category);
+        this.food = this.emptyMenuForm();
       }).catch(error => {
         console.log('error', error.response);
         if (error.response.status == 422) {

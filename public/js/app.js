@@ -1837,12 +1837,12 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      food: this.getBasicMenuItem(),
+      food: this.emptyMenuForm(),
       validation: new _utils_Validation_js__WEBPACK_IMPORTED_MODULE_1__["default"]()
     };
   },
   methods: {
-    getBasicMenuItem: function getBasicMenuItem() {
+    emptyMenuForm: function emptyMenuForm() {
       return {
         item: '',
         category: '',
@@ -1853,11 +1853,15 @@ __webpack_require__.r(__webpack_exports__);
     handleSubmit: function handleSubmit() {
       var _this = this;
 
-      console.log('form data', this.food);
+      // console.log('form data', this.food);
       var postData = this.food;
       postData.restoId = this.restoId;
       window.axios.post('api/item/save', postData).then(function (response) {
         console.log('response', response.data);
+
+        _this.$emit('newMenuItemAdded', response.data, postData.category);
+
+        _this.food = _this.emptyMenuForm();
       }).catch(function (error) {
         console.log('error', error.response);
 
@@ -1918,6 +1922,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -1937,16 +1945,24 @@ __webpack_require__.r(__webpack_exports__);
     });
 
     this.menu = this.categories[0];
+    this.localItems = this.items;
   },
   data: function data() {
     return {
+      localItems: '',
       menu: '',
       categories: []
     };
   },
   computed: {
     currentMenuItems: function currentMenuItems() {
-      return this.items[this.menu];
+      return this.localItems[this.menu];
+    }
+  },
+  methods: {
+    handleNewMenuItem: function handleNewMenuItem(item, category) {
+      console.log('item', item);
+      this.localItems[category].unshift(item);
     }
   }
 });
@@ -37724,7 +37740,7 @@ var render = function() {
           { staticClass: "form-group" },
           [
             _c("label", { attrs: { for: "name" } }, [
-              _vm._v("Select category")
+              _vm._v("Select Menu Category")
             ]),
             _vm._v(" "),
             _c("multiselect", {
@@ -37917,7 +37933,8 @@ var render = function() {
                     attrs: {
                       categories: _vm.categories,
                       "resto-id": _vm.restoId
-                    }
+                    },
+                    on: { newMenuItemAdded: _vm.handleNewMenuItem }
                   })
                 ],
                 1
