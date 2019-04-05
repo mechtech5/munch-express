@@ -2088,6 +2088,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _RestoAddForm_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RestoAddForm.vue */ "./resources/js/modules/restos/RestoAddForm.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2119,6 +2121,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     RestoAddForm: _RestoAddForm_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -2126,14 +2129,17 @@ __webpack_require__.r(__webpack_exports__);
   props: ['restos'],
   created: function created() {
     console.log('this.restos.length', this.restos.length);
+    this.localRestos = this.restos;
   },
   computed: {
     showAddForm: function showAddForm() {
-      return this.restos.length < 5 ? true : false;
+      return this.localRestos.length < 5 ? true : false;
     }
   },
   data: function data() {
-    return {};
+    return {
+      localRestos: []
+    };
   },
   methods: {
     handleAddNewResto: function handleAddNewResto() {
@@ -2143,7 +2149,12 @@ __webpack_require__.r(__webpack_exports__);
       this.$modal.hide('add-new-resto');
     },
     handleSaveResto: function handleSaveResto(restoData) {
-      console.log('restoData', restoData);
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/resto', restoData).then(function (response) {
+        _this.localRestos.unshift(response.data);
+      });
+      this.$modal.hide('add-new-resto');
     }
   }
 });
@@ -38316,7 +38327,7 @@ var render = function() {
       "div",
       { staticClass: "row" },
       [
-        _vm._l(_vm.restos, function(resto) {
+        _vm._l(_vm.localRestos, function(resto) {
           return _c(
             "div",
             { key: resto.id, staticClass: "col-md-4 mb-4" },
